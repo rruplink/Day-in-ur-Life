@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day in ur Life</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>DAY IN UR LIFE</h1>
+        
+        <div class="input-section">
+            <form id="birthdate-form">
+                <label for="birthdate">ENTER YOUR DATE OF BIRTH:</label>
+                <input type="date" id="birthdate" name="birthdate" required>
+                <div class="button-group">
+                    <button type="submit">CALCULATE</button>
+                    <button type="button" id="reset-button">RESET</button>
+                </div>
+            </form>
+        </div>
+        
+        <div class="results-section" id="results">
+            <!-- Time Lived Section in a straight line -->
+            <div class="result-card time-lived-card">
+                <h2>TIME LIVED</h2>
+                <div class="counter-container">
+                    <div class="counter" id="days-lived">0</div>
+                    <div class="label">DAYS</div>
+                </div>
+                <div class="counter-container">
+                    <div class="counter" id="hours-lived">0</div>
+                    <div class="label">HOURS</div>
+                </div>
+                <div class="counter-container">
+                    <div class="counter" id="seconds-lived">0</div>
+                    <div class="label">SECONDS</div>
+                </div>
+            </div>
+            
+            <!-- Progress Bars Stacked -->
+            <div class="result-card">
+                <h2>PROGRESSION TO NEXT BIRTHDAY</h2>
+                <div class="progress-container">
+                    <div class="progress-bar" id="birthday-progress"></div>
+                    <div class="progress-text" id="birthday-percentage">0%</div>
+                </div>
+            </div>
+            
+            <div class="result-card">
+                <h2>PROGRESSION THROUGH CURRENT DECADE</h2>
+                <div class="progress-container">
+                    <div class="progress-bar" id="decade-progress"></div>
+                    <div class="progress-text" id="decade-percentage">0%</div>
+                </div>
+            </div>
+            
+            <div class="result-card">
+                <h2>PROGRESSION THROUGH LIFE</h2>
+                <div class="label" style="text-align: center">(PRESUMING A LIFE EXPECTANCY OF 100 YEARS)</div>
+                <div class="progress-container">
+                    <div class="progress-bar" id="life-progress"></div>
+                    <div class="progress-text" id="life-percentage">0%</div>
+                </div>
+            </div>
+            
+            <!-- Life Calendar Visualization -->
+            <div class="result-card life-calendar-card">
+                <h2>LIFE CALENDAR</h2>
+                <div class="calendar-options">
+                    <button class="calendar-option active" data-view="year">YEAR</button>
+                    <button class="calendar-option" data-view="decade">DECADE</button>
+                    <button class="calendar-option" data-view="life">LIFE</button>
+                </div>
+                <div class="calendar-description" id="calendar-description">
+                    DAYS FROM BIRTHDAY TO BIRTHDAY
+                </div>
+                <div class="calendar-container" id="calendar-container">
+                    <!-- Calendar will be generated here -->
+                </div>
+                <div class="calendar-legend">
+                    <div class="legend-item">
+                        <div class="legend-box filled"></div>
+                        <span>LIVED</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-box empty"></div>
+                        <span>REMAINING</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html> 
