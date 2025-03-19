@@ -7,6 +7,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const calendarOptions = document.querySelectorAll('.calendar-option');
     const calendarDescription = document.getElementById('calendar-description');
     
+    // Set default calendar view
+    let currentCalendarView = 'year';
+    calendarDescription.textContent = 'DAYS FROM BIRTHDAY TO BIRTHDAY';
+    
+    // Trigger click on year button to initialize calendar
+    document.querySelector('.calendar-option[data-view="year"]').click();
+    
     // Elements for time lived
     const daysLivedElement = document.getElementById('days-lived');
     const hoursLivedElement = document.getElementById('hours-lived');
@@ -17,12 +24,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const birthdayPercentage = document.getElementById('birthday-percentage');
     const decadeProgressBar = document.getElementById('decade-progress');
     const decadePercentage = document.getElementById('decade-percentage');
-    const lifeProgressBar = document.getElementById('life-progress');
-    const lifePercentage = document.getElementById('life-percentage');
     
     let birthdate;
     let updateInterval;
-    let currentCalendarView = 'year';
     
     // Function to set a cookie
     function setCookie(name, value, days) {
@@ -108,9 +112,6 @@ document.addEventListener('DOMContentLoaded', () => {
         decadeProgressBar.style.width = "0%";
         decadePercentage.textContent = "0%";
         
-        lifeProgressBar.style.width = "0%";
-        lifePercentage.textContent = "0%";
-        
         // Clear calendar
         calendarContainer.innerHTML = '';
     });
@@ -126,6 +127,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!isNaN(birthdate.getTime())) {
             resultsSection.classList.add('visible');
             updateCalculations();
+            // Force calendar view to initialize
+            document.querySelector('.calendar-option[data-view="year"]').click();
             updateInterval = setInterval(updateCalculations, 1000);
         }
     }
@@ -157,6 +160,8 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Update immediately and then set interval
         updateCalculations();
+        // Force calendar view to initialize
+        document.querySelector('.calendar-option[data-view="year"]').click();
         updateInterval = setInterval(updateCalculations, 1000);
     });
     
@@ -204,14 +209,6 @@ document.addEventListener('DOMContentLoaded', () => {
         decadeProgressBar.style.width = `${decadeProgress}%`;
         decadePercentage.textContent = `${decadeProgress.toFixed(2)}% (${decadeStart}s)`;
         
-        // Calculate life progress (assuming 80 years life expectancy)
-        const lifeExpectancy = 100;
-        const lifeProgress = (age / lifeExpectancy) * 100;
-        
-        // Update life progress
-        lifeProgressBar.style.width = `${lifeProgress}%`;
-        lifePercentage.textContent = `${lifeProgress.toFixed(2)}%`;
-        
         // Update life calendar
         updateLifeCalendar();
     }
@@ -230,9 +227,6 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (currentCalendarView === 'decade') {
             // Create a decade view (10 years x 52 weeks)
             createDecadeCalendar(now);
-        } else if (currentCalendarView === 'life') {
-            // Create a life view (80 years x 12 months)
-            createLifeCalendar(now);
         }
     }
     
@@ -381,83 +375,6 @@ document.addEventListener('DOMContentLoaded', () => {
             // Add row to container
             calendarContainer.appendChild(yearRow);
         }
-    }
-    
-    function createLifeCalendar(now) {
-        const lifeExpectancy = 100;
-        const yearsPerRow = 6; // Display 6 years per row instead of 5
-        
-        // Create a container for all the year blocks
-        const lifeCalendarContainer = document.createElement('div');
-        lifeCalendarContainer.className = 'life-calendar-container';
-        
-        // Calculate how many rows we need
-        const totalRows = Math.ceil(lifeExpectancy / yearsPerRow);
-        
-        // Create rows of years
-        for (let row = 0; row < totalRows; row++) {
-            // Create a row container
-            const yearRow = document.createElement('div');
-            yearRow.className = 'life-year-row';
-            
-            // Add year blocks for this row
-            for (let col = 0; col < yearsPerRow; col++) {
-                const yearIndex = row * yearsPerRow + col;
-                
-                // Create year container
-                const yearBlock = document.createElement('div');
-                yearBlock.className = 'life-year-block';
-                
-                // If we've reached the life expectancy, create an empty block for consistent layout
-                if (yearIndex >= lifeExpectancy) {
-                    yearBlock.style.visibility = 'hidden'; // Hide but preserve space
-                    yearRow.appendChild(yearBlock);
-                    continue;
-                }
-                
-                // Add year label
-                const yearLabel = document.createElement('div');
-                yearLabel.className = 'life-year-label';
-                yearLabel.textContent = yearIndex;
-                yearBlock.appendChild(yearLabel);
-                
-                // Create month container
-                const monthContainer = document.createElement('div');
-                monthContainer.className = 'life-month-container';
-                
-                // Calculate the start date for this year
-                const yearStartDate = new Date(birthdate);
-                yearStartDate.setFullYear(birthdate.getFullYear() + yearIndex);
-                
-                // Create 12 boxes for months in a year
-                for (let month = 0; month < 12; month++) {
-                    const monthBox = document.createElement('div');
-                    monthBox.className = 'calendar-box';
-                    
-                    // Calculate if this month has passed
-                    const monthStart = new Date(yearStartDate);
-                    monthStart.setMonth(monthStart.getMonth() + month);
-                    
-                    if (monthStart < now) {
-                        monthBox.classList.add('filled');
-                    }
-                    
-                    monthContainer.appendChild(monthBox);
-                }
-                
-                // Add month container to year block
-                yearBlock.appendChild(monthContainer);
-                
-                // Add year block to row
-                yearRow.appendChild(yearBlock);
-            }
-            
-            // Add row to container
-            lifeCalendarContainer.appendChild(yearRow);
-        }
-        
-        // Add the life calendar container to the main calendar container
-        calendarContainer.appendChild(lifeCalendarContainer);
     }
     
     function calculateAge(birthdate, currentDate) {
